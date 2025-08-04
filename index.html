@@ -1,23 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KINGREGANAIRE REFFERAL EARNING💰</title>
+  <title>KINGREGANAIRE REFERRAL EARNING 💰</title>
   <style>
-    /* styles simplified for clarity */
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f5f5;
+    }
+    header {
+      background-color: #6a1b9a;
+      padding: 15px;
+      text-align: center;
+      color: white;
+      font-family: 'Times New Roman', serif;
+      font-size: 24px;
+      font-weight: bold;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    nav {
+      background: #4a148c;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
       padding: 20px;
+      max-width: 500px;
+      margin: auto;
     }
     .card {
       background: white;
-      max-width: 400px;
-      margin: 20px auto;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
     }
     input[type=text], input[type=email], input[type=tel], input[type=password] {
       width: 100%;
@@ -36,10 +67,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-    button.btn:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
     .password-toggle {
       display: flex;
       align-items: center;
@@ -54,9 +81,6 @@
       display: block;
       text-align: center;
     }
-    .link:hover {
-      color: #4a148c;
-    }
     #successMsg {
       color: green;
       text-align: center;
@@ -68,200 +92,208 @@
       margin: 10px 0;
       display: none;
     }
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
+  <header>KINGREGANAIRE REFERRAL EARNING 💰</header>
+  <nav>
+    <a href="#">🏠 Home</a>
+    <a href="#">ℹ️ About</a>
+    <a href="#signup">📝 Signup</a>
+    <a href="#login">🔐 Login</a>
+  </nav>  <div class="container">
+    <div class="card" id="auth">
+      <h2>Signup</h2>
+      <input type="text" id="name" placeholder="Jina Kamili" />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="tel" id="phone" placeholder="Namba ya Simu" />
+      <input type="text" id="nida" placeholder="Namba ya NIDA" />
+      <input type="text" id="region" placeholder="Mkoa" />
+      <input type="text" id="district" placeholder="Wilaya" />
+      <input type="password" id="password" placeholder="Neno la Siri" />
+      <input type="password" id="confirmPassword" placeholder="Thibitisha Neno la Siri" />
+      <div class="password-toggle">
+        <input type="checkbox" id="togglePassword" />
+        <label for="togglePassword">Onyesha Neno la Siri</label>
+      </div>
+      <button class="btn" onclick="signup()">Jisajili</button>
+      <div id="loaderSignup">Inasajili...</div>
+      <div id="successMsg">✅ Usajili umefanikiwa! Tafadhali fanya login sasa.</div><hr />
 
-  <div class="card" id="auth">
-    <h2>Signup</h2>
-    <input type="text" id="name" placeholder="Jina Kamili" />
-    <input type="email" id="email" placeholder="Email" />
-    <input type="tel" id="phone" placeholder="Namba ya Simu" />
-    <input type="text" id="nida" placeholder="Namba ya NIDA" />
-    <input type="text" id="region" placeholder="Mkoa" />
-    <input type="text" id="district" placeholder="Wilaya" />
-    <input type="password" id="password" placeholder="Neno la Siri" />
-    <input type="password" id="confirmPassword" placeholder="Thibitisha Neno la Siri" />
-    <div class="password-toggle">
-      <input type="checkbox" id="togglePassword" />
-      <label for="togglePassword">Onyesha Neno la Siri</label>
-    </div>
-    <button class="btn" onclick="signup()">Jisajili</button>
-    <div id="loaderSignup">Inasajili...</div>
-    <div id="successMsg">✅ Usajili umefanikiwa! Tafadhali fanya login sasa.</div>
-
-    <hr />
-
-    <h2>Login</h2>
-    <input type="tel" id="loginPhone" placeholder="Namba ya Simu" />
-    <input type="password" id="loginPassword" placeholder="Neno la Siri" />
-    <div class="password-toggle">
-      <input type="checkbox" id="toggleLoginPassword" />
-      <label for="toggleLoginPassword">Onyesha Neno la Siri</label>
-    </div>
-    <button class="btn" onclick="login()">Login</button>
-    <div id="loaderLogin">Inaanza Kuingia...</div>
-    <span class="link" onclick="showResetPassword()">Umesahau Neno la Siri?</span>
+  <h2>Login</h2>
+  <input type="tel" id="loginPhone" placeholder="Namba ya Simu" />
+  <input type="password" id="loginPassword" placeholder="Neno la Siri" />
+  <div class="password-toggle">
+    <input type="checkbox" id="toggleLoginPassword" />
+    <label for="toggleLoginPassword">Onyesha Neno la Siri</label>
   </div>
+  <button class="btn" onclick="login()">Login</button>
+  <div id="loaderLogin">Inaanza Kuingia...</div>
+  <span class="link" onclick="showResetPassword()">Umesahau Neno la Siri?</span>
+</div>
 
-  <div class="card" id="resetPasswordCard" style="display:none">
-    <h2>Badili Neno la Siri</h2>
-    <input type="tel" id="resetPhone" placeholder="Namba ya Simu" />
-    <input type="password" id="newPassword" placeholder="Neno Jipya" />
-    <input type="password" id="confirmNewPassword" placeholder="Thibitisha Neno Jipya" />
-    <button class="btn" onclick="resetPassword()">Wasilisha</button>
-    <span class="link" onclick="backToLogin()">Rudi kwenye Login</span>
-  </div>
+<div class="card" id="resetPasswordCard" style="display:none">
+  <h2>Badili Neno la Siri</h2>
+  <input type="tel" id="resetPhone" placeholder="Namba ya Simu" />
+  <input type="password" id="newPassword" placeholder="Neno Jipya" />
+  <input type="password" id="confirmNewPassword" placeholder="Thibitisha Neno Jipya" />
+  <button class="btn" onclick="resetPassword()">Wasilisha</button>
+  <span class="link" onclick="backToLogin()">Rudi kwenye Login</span>
+</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
+  </div>  <footer>
+    ©️ 2025 KINGREGANA. All rights reserved.
+  </footer>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAwnI3Sezv6SQKQ6nUgLv48IVZGG9Jq5AE",
-    authDomain: "kingreganaire-ref.firebaseapp.com",
-    projectId: "kingreganaire-ref",
-    storageBucket: "kingreganaire-ref.firebasestorage.app",
-    messagingSenderId: "121481840174",
-    appId: "1:121481840174:web:dd4a61e7c28b2602c341bf",
-    measurementId: "G-BMX502JQHL"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwnI3Sezv6SQKQ6nUgLv48IVZGG9Jq5AE",
+      authDomain: "kingreganaire-ref.firebaseapp.com",
+      projectId: "kingreganaire-ref",
+      storageBucket: "kingreganaire-ref.firebasestorage.app",
+      messagingSenderId: "121481840174",
+      appId: "1:121481840174:web:dd4a61e7c28b2602c341bf",
+      measurementId: "G-BMX502JQHL"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const functions = getFunctions(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const functions = getFunctions(app);
 
-  const loaderSignup = document.getElementById("loaderSignup");
-  const successMsg = document.getElementById("successMsg");
-  const loaderLogin = document.getElementById("loaderLogin");
+    const loaderSignup = document.getElementById("loaderSignup");
+    const successMsg = document.getElementById("successMsg");
+    const loaderLogin = document.getElementById("loaderLogin");
 
-  window.signup = async function () {
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const nida = document.getElementById("nida").value.trim();
-    const region = document.getElementById("region").value.trim();
-    const district = document.getElementById("district").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const confirmPassword = document.getElementById("confirmPassword").value.trim();
+    window.signup = async function () {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const nida = document.getElementById("nida").value.trim();
+      const region = document.getElementById("region").value.trim();
+      const district = document.getElementById("district").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-    if (!name || !email || !phone || !nida || !region || !district || !password || !confirmPassword) {
-      alert("Tafadhali jaza taarifa zote za usajili.");
-      return;
-    }
-    if (password !== confirmPassword) {
-      alert("Neno la siri na uthibitisho wake havilingani.");
-      return;
-    }
-
-    loaderSignup.style.display = "block";
-    successMsg.style.display = "none";
-    document.querySelector("#auth button").disabled = true;
-
-    try {
-      await addDoc(collection(db, "users"), {
-        name, email, phone, nida, region, district, password, paid: false
-      });
-      setTimeout(() => {
-        loaderSignup.style.display = "none";
-        successMsg.style.display = "block";
-        document.querySelector("#auth button").disabled = false;
-      }, 1000);
-    } catch (err) {
-      alert("Tatizo limetokea, jaribu tena.");
-      loaderSignup.style.display = "none";
-      document.querySelector("#auth button").disabled = false;
-    }
-  };
-
-  window.showResetPassword = function () {
-    document.getElementById("auth").style.display = "none";
-    document.getElementById("resetPasswordCard").style.display = "block";
-  };
-
-  window.backToLogin = function () {
-    document.getElementById("resetPasswordCard").style.display = "none";
-    document.getElementById("auth").style.display = "block";
-  };
-
-  window.resetPassword = async function () {
-    const phone = document.getElementById("resetPhone").value.trim();
-    const newPassword = document.getElementById("newPassword").value.trim();
-    const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
-
-    if (!phone || !newPassword || !confirmNewPassword) {
-      alert("Tafadhali jaza sehemu zote.");
-      return;
-    }
-    if (newPassword !== confirmNewPassword) {
-      alert("Neno jipya na uthibitisho havilingani.");
-      return;
-    }
-
-    try {
-      const q = query(collection(db, "users"), where("phone", "==", phone));
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        alert("Mtumiaji hakupatikana.");
+      if (!name || !email || !phone || !nida || !region || !district || !password || !confirmPassword) {
+        alert("Tafadhali jaza taarifa zote za usajili.");
         return;
       }
-      // Update password
-      for (const docSnap of querySnapshot.docs) {
-        await updateDoc(doc(db, "users", docSnap.id), { password: newPassword });
+      if (password !== confirmPassword) {
+        alert("Neno la siri na uthibitisho wake havilingani.");
+        return;
       }
 
-      // Call Firebase function to send email notification
-      const sendEmail = httpsCallable(functions, "sendPasswordResetEmail");
-      await sendEmail({ phone });
+      loaderSignup.style.display = "block";
+      successMsg.style.display = "none";
+      document.querySelector("#auth button").disabled = true;
 
-      alert("Neno la siri limebadilishwa kwa mafanikio na email imetumwa.");
-      backToLogin();
-    } catch (err) {
-      console.error(err);
-      alert("Tatizo limetokea, jaribu tena.");
-    }
-  };
-
-  document.getElementById("togglePassword").addEventListener("change", function () {
-    const passwordInput = document.getElementById("password");
-    const confirmInput = document.getElementById("confirmPassword");
-    const type = this.checked ? "text" : "password";
-    passwordInput.type = type;
-    confirmInput.type = type;
-  });
-
-  document.getElementById("toggleLoginPassword").addEventListener("change", function () {
-    const loginInput = document.getElementById("loginPassword");
-    loginInput.type = this.checked ? "text" : "password";
-  });
-
-  window.login = async function () {
-    const phone = document.getElementById("loginPhone").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
-
-    if (!phone || !password) {
-      alert("Tafadhali jaza namba ya simu na neno la siri.");
-      return;
-    }
-
-    loaderLogin.style.display = "block";
-    try {
-      const q = query(collection(db, "users"), where("phone", "==", phone), where("password", "==", password));
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        alert("Namba au neno la siri si sahihi.");
-      } else {
-        alert("Umeingia kwa mafanikio!");
-        // TODO: Endesha dashboard au kurasa za app hapa
+      try {
+        await addDoc(collection(db, "users"), {
+          name, email, phone, nida, region, district, password, paid: false
+        });
+        setTimeout(() => {
+          loaderSignup.style.display = "none";
+          successMsg.style.display = "block";
+          document.querySelector("#auth button").disabled = false;
+        }, 1000);
+      } catch (err) {
+        alert("Tatizo limetokea, jaribu tena.");
+        loaderSignup.style.display = "none";
+        document.querySelector("#auth button").disabled = false;
       }
-    } catch (err) {
-      alert("Tatizo limetokea, jaribu tena.");
-    } finally {
-      loaderLogin.style.display = "none";
-    }
-  };
-</script>
+    };
 
-</body>
+    window.login = async function () {
+      const phone = document.getElementById("loginPhone").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      if (!phone || !password) {
+        alert("Tafadhali jaza namba ya simu na neno la siri.");
+        return;
+      }
+
+      loaderLogin.style.display = "block";
+      try {
+        const q = query(collection(db, "users"), where("phone", "==", phone), where("password", "==", password));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          alert("Namba au neno la siri si sahihi.");
+        } else {
+          alert("Umeingia kwa mafanikio!");
+        }
+      } catch (err) {
+        alert("Tatizo limetokea, jaribu tena.");
+      } finally {
+        loaderLogin.style.display = "none";
+      }
+    };
+
+    window.showResetPassword = function () {
+      document.getElementById("auth").style.display = "none";
+      document.getElementById("resetPasswordCard").style.display = "block";
+    };
+
+    window.backToLogin = function () {
+      document.getElementById("resetPasswordCard").style.display = "none";
+      document.getElementById("auth").style.display = "block";
+    };
+
+    window.resetPassword = async function () {
+      const phone = document.getElementById("resetPhone").value.trim();
+      const newPassword = document.getElementById("newPassword").value.trim();
+      const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
+
+      if (!phone || !newPassword || !confirmNewPassword) {
+        alert("Tafadhali jaza sehemu zote.");
+        return;
+      }
+      if (newPassword !== confirmNewPassword) {
+        alert("Neno jipya na uthibitisho havilingani.");
+        return;
+      }
+
+      try {
+        const q = query(collection(db, "users"), where("phone", "==", phone));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          alert("Mtumiaji hakupatikana.");
+          return;
+        }
+        for (const docSnap of querySnapshot.docs) {
+          await updateDoc(doc(db, "users", docSnap.id), { password: newPassword });
+        }
+
+        const sendEmail = httpsCallable(functions, "sendPasswordResetEmail");
+        await sendEmail({ phone });
+
+        alert("Neno la siri limebadilishwa kwa mafanikio na email imetumwa.");
+        backToLogin();
+      } catch (err) {
+        console.error(err);
+        alert("Tatizo limetokea, jaribu tena.");
+      }
+    };
+
+    document.getElementById("togglePassword").addEventListener("change", function () {
+      const passwordInput = document.getElementById("password");
+      const confirmInput = document.getElementById("confirmPassword");
+      const type = this.checked ? "text" : "password";
+      passwordInput.type = type;
+      confirmInput.type = type;
+    });
+
+    document.getElementById("toggleLoginPassword").addEventListener("change", function () {
+      const loginInput = document.getElementById("loginPassword");
+      loginInput.type = this.checked ? "text" : "password";
+    });
+  </script></body>
 </html>
