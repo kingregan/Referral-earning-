@@ -23,6 +23,10 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-5px); }
     }
+    @keyframes rotateGear {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     nav {
       background: #4a148c;
       display: flex;
@@ -49,7 +53,51 @@
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
       margin-bottom: 30px;
+      transition: opacity 0.3s ease;
     }
+    .dimmed {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .gear-spinner {
+      width: 80px;
+      height: 80px;
+      border: 8px solid #ccc;
+      border-top: 8px solid #6a1b9a;
+      border-radius: 50%;
+      animation: rotateGear 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+    #modalConfirm, #modalSignupSuccess, #modalLoginSuccess {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 300px;
+    }
+    .modal-btns {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+    .modal-btns button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .cancel { background: #999; color: white; }
+    .confirm { background: #6a1b9a; color: white; }
     input[type=text], input[type=email], input[type=tel], input[type=password] {
       width: 100%;
       padding: 8px;
@@ -87,11 +135,6 @@
       margin-top: 12px;
       display: none;
     }
-    #loaderSignup, #loaderLogin {
-      text-align: center;
-      margin: 10px 0;
-      display: none;
-    }
     footer {
       background-color: #222;
       color: white;
@@ -109,7 +152,8 @@
     <a href="#signup">📝 Signup</a>
     <a href="#login">🔐 Login</a>
   </nav>  <div class="container">
-    <div class="card" id="auth">
+    <div id="gearSpinner" class="gear-spinner"></div>
+    <div class="card" id="authCard">
       <h2>Signup</h2>
       <input type="text" id="name" placeholder="Jina Kamili" />
       <input type="email" id="email" placeholder="Email" />
@@ -124,7 +168,7 @@
         <label for="togglePassword">Onyesha Neno la Siri</label>
       </div>
       <button class="btn" onclick="signup()">Jisajili</button>
-      <div id="loaderSignup">Inasajili...</div>
+      <button class="btn" onclick="showModal()" style="background:#999; margin-top:10px;">Cancel Usajili</button>
       <div id="successMsg">✅ Usajili umefanikiwa! Tafadhali fanya login sasa.</div><hr />
 
   <h2>Login</h2>
@@ -135,165 +179,79 @@
     <label for="toggleLoginPassword">Onyesha Neno la Siri</label>
   </div>
   <button class="btn" onclick="login()">Login</button>
-  <div id="loaderLogin">Inaanza Kuingia...</div>
-  <span class="link" onclick="showResetPassword()">Umesahau Neno la Siri?</span>
 </div>
 
-<div class="card" id="resetPasswordCard" style="display:none">
-  <h2>Badili Neno la Siri</h2>
-  <input type="tel" id="resetPhone" placeholder="Namba ya Simu" />
-  <input type="password" id="newPassword" placeholder="Neno Jipya" />
-  <input type="password" id="confirmNewPassword" placeholder="Thibitisha Neno Jipya" />
-  <button class="btn" onclick="resetPassword()">Wasilisha</button>
-  <span class="link" onclick="backToLogin()">Rudi kwenye Login</span>
-</div>
-
+  </div>  <div id="modalConfirm">
+    <div class="modal-box">
+      <p>Unataka kughairi usajili?</p>
+      <div class="modal-btns">
+        <button class="cancel" onclick="hideModal()">Hapana</button>
+        <button class="confirm" onclick="cancelSignup()">Ndiyo</button>
+      </div>
+    </div>
+  </div>  <div id="modalSignupSuccess">
+    <div class="modal-box">
+      <h3>Usajili Umefanikiwa ✅</h3>
+      <p>Tafadhali fanya login sasa.</p>
+      <button class="btn" onclick="hideSignupSuccess()">Sawa</button>
+    </div>
+  </div>  <div id="modalLoginSuccess">
+    <div class="modal-box">
+      <h3>Login Umefanikiwa ✅</h3>
+      <p>Karibu tena Kingreganaire Ref!</p>
+      <button class="btn" onclick="hideLoginSuccess()">Sawa</button>
+    </div>
   </div>  <footer>
     ©️ 2025 KINGREGANA. All rights reserved.
-  </footer>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
+  </footer>  <script>
+    function showModal() {
+      document.getElementById("modalConfirm").style.display = "flex";
+    }
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAwnI3Sezv6SQKQ6nUgLv48IVZGG9Jq5AE",
-      authDomain: "kingreganaire-ref.firebaseapp.com",
-      projectId: "kingreganaire-ref",
-      storageBucket: "kingreganaire-ref.firebasestorage.app",
-      messagingSenderId: "121481840174",
-      appId: "1:121481840174:web:dd4a61e7c28b2602c341bf",
-      measurementId: "G-BMX502JQHL"
-    };
+    function hideModal() {
+      document.getElementById("modalConfirm").style.display = "none";
+    }
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const functions = getFunctions(app);
+    function hideSignupSuccess() {
+      document.getElementById("modalSignupSuccess").style.display = "none";
+    }
 
-    const loaderSignup = document.getElementById("loaderSignup");
-    const successMsg = document.getElementById("successMsg");
-    const loaderLogin = document.getElementById("loaderLogin");
+    function hideLoginSuccess() {
+      document.getElementById("modalLoginSuccess").style.display = "none";
+    }
 
-    window.signup = async function () {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const nida = document.getElementById("nida").value.trim();
-      const region = document.getElementById("region").value.trim();
-      const district = document.getElementById("district").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+    function cancelSignup() {
+      const gear = document.getElementById("gearSpinner");
+      const authCard = document.getElementById("authCard");
+      gear.style.display = "block";
+      authCard.classList.add("dimmed");
+      hideModal();
 
-      if (!name || !email || !phone || !nida || !region || !district || !password || !confirmPassword) {
-        alert("Tafadhali jaza taarifa zote za usajili.");
-        return;
-      }
-      if (password !== confirmPassword) {
-        alert("Neno la siri na uthibitisho wake havilingani.");
-        return;
-      }
+      setTimeout(() => {
+        gear.style.display = "none";
+        authCard.classList.remove("dimmed");
+        alert("Usajili umeghairiwa.");
+      }, 2000);
+    }
 
-      loaderSignup.style.display = "block";
-      successMsg.style.display = "none";
-      document.querySelector("#auth button").disabled = true;
+    async function signup() {
+      document.getElementById("gearSpinner").style.display = "block";
+      document.getElementById("authCard").classList.add("dimmed");
+      setTimeout(() => {
+        document.getElementById("gearSpinner").style.display = "none";
+        document.getElementById("authCard").classList.remove("dimmed");
+        document.getElementById("modalSignupSuccess").style.display = "flex";
+      }, 2000);
+    }
 
-      try {
-        await addDoc(collection(db, "users"), {
-          name, email, phone, nida, region, district, password, paid: false
-        });
-        setTimeout(() => {
-          loaderSignup.style.display = "none";
-          successMsg.style.display = "block";
-          document.querySelector("#auth button").disabled = false;
-        }, 1000);
-      } catch (err) {
-        alert("Tatizo limetokea, jaribu tena.");
-        loaderSignup.style.display = "none";
-        document.querySelector("#auth button").disabled = false;
-      }
-    };
-
-    window.login = async function () {
-      const phone = document.getElementById("loginPhone").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-
-      if (!phone || !password) {
-        alert("Tafadhali jaza namba ya simu na neno la siri.");
-        return;
-      }
-
-      loaderLogin.style.display = "block";
-      try {
-        const q = query(collection(db, "users"), where("phone", "==", phone), where("password", "==", password));
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          alert("Namba au neno la siri si sahihi.");
-        } else {
-          alert("Umeingia kwa mafanikio!");
-        }
-      } catch (err) {
-        alert("Tatizo limetokea, jaribu tena.");
-      } finally {
-        loaderLogin.style.display = "none";
-      }
-    };
-
-    window.showResetPassword = function () {
-      document.getElementById("auth").style.display = "none";
-      document.getElementById("resetPasswordCard").style.display = "block";
-    };
-
-    window.backToLogin = function () {
-      document.getElementById("resetPasswordCard").style.display = "none";
-      document.getElementById("auth").style.display = "block";
-    };
-
-    window.resetPassword = async function () {
-      const phone = document.getElementById("resetPhone").value.trim();
-      const newPassword = document.getElementById("newPassword").value.trim();
-      const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
-
-      if (!phone || !newPassword || !confirmNewPassword) {
-        alert("Tafadhali jaza sehemu zote.");
-        return;
-      }
-      if (newPassword !== confirmNewPassword) {
-        alert("Neno jipya na uthibitisho havilingani.");
-        return;
-      }
-
-      try {
-        const q = query(collection(db, "users"), where("phone", "==", phone));
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          alert("Mtumiaji hakupatikana.");
-          return;
-        }
-        for (const docSnap of querySnapshot.docs) {
-          await updateDoc(doc(db, "users", docSnap.id), { password: newPassword });
-        }
-
-        const sendEmail = httpsCallable(functions, "sendPasswordResetEmail");
-        await sendEmail({ phone });
-
-        alert("Neno la siri limebadilishwa kwa mafanikio na email imetumwa.");
-        backToLogin();
-      } catch (err) {
-        console.error(err);
-        alert("Tatizo limetokea, jaribu tena.");
-      }
-    };
-
-    document.getElementById("togglePassword").addEventListener("change", function () {
-      const passwordInput = document.getElementById("password");
-      const confirmInput = document.getElementById("confirmPassword");
-      const type = this.checked ? "text" : "password";
-      passwordInput.type = type;
-      confirmInput.type = type;
-    });
-
-    document.getElementById("toggleLoginPassword").addEventListener("change", function () {
-      const loginInput = document.getElementById("loginPassword");
-      loginInput.type = this.checked ? "text" : "password";
-    });
+    async function login() {
+      document.getElementById("gearSpinner").style.display = "block";
+      document.getElementById("authCard").classList.add("dimmed");
+      setTimeout(() => {
+        document.getElementById("gearSpinner").style.display = "none";
+        document.getElementById("authCard").classList.remove("dimmed");
+        document.getElementById("modalLoginSuccess").style.display = "flex";
+      }, 2000);
+    }
   </script></body>
 </html>
