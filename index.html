@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en">
+<!-- Kingreganaire Ref Full Code with Password and Payment Restriction--><!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,9 +16,6 @@
       color: white;
       padding: 20px;
     }
-    main {
-      padding: 30px;
-    }
     .btn {
       background: #6a1b9a;
       color: white;
@@ -31,6 +28,9 @@
     .btn:hover {
       background: #7b1fa2;
     }
+    .paid-btn {
+      background: #4caf50 !important;
+    }
     .card {
       background: white;
       max-width: 600px;
@@ -39,7 +39,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    input, select, textarea {
+    input {
       padding: 10px;
       width: 90%;
       margin-bottom: 15px;
@@ -55,193 +55,120 @@
       padding: 15px;
       margin-top: 30px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 10px auto;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      font-size: 14px;
-    }
-    th {
-      background: #eee;
-    }
   </style>
 </head>
 <body>
   <header>
     <h1>Karibu Kingreganaire Ref</h1>
-    <p>Jiunge kwa Tsh 5,000 na uanze kupata faida kwa referral!</p>
-  </header>
-  <main>
-    <div class="card" id="auth">
-      <h2>Login / Signup</h2>
-      <form id="authForm">
-        <input type="text" id="username" placeholder="Jina Kamili" required><br>
-        <input type="tel" id="userphone" placeholder="Namba ya Simu" required><br>
-        <button type="submit" class="btn">Ingia</button>
-      </form>
-    </div><div class="card" id="dashboard">
-  <h2>Dashboard ya Mtumiaji</h2>
-  <p><strong>Jina:</strong> <span id="dashName"></span></p>
-  <p><strong>Namba ya Simu:</strong> <span id="dashPhone"></span></p>
-  <p><strong>Referral Link:</strong></p>
-  <p><code id="refLink"></code></p>
-  <h3>Omba Malipo</h3>
-  <form id="withdrawForm">
-    <input type="number" id="amount" placeholder="Kiasi unachotaka kutoa (Tsh)" required><br>
-    <input type="text" id="mpesa" placeholder="Namba ya M-Pesa ya kupokea" required><br>
-    <button type="submit" class="btn">Omba Malipo</button>
-  </form>
-  <p id="withdrawMessage"></p>
-  <button onclick="logout()" class="btn">Toka</button>
-</div>
-
-<div class="card" id="adminLogin">
-  <h2>Admin Access</h2>
-  <input type="password" id="adminCode" placeholder="Weka admin code">
-  <button class="btn" onclick="checkAdminCode()">Ingia Admin</button>
-</div>
-
-<div class="card" id="adminPanel">
-  <h2>Admin Panel</h2>
-  <input type="text" id="searchInput" placeholder="Tafuta jina/simu/link">
-  <h3>Users</h3>
-  <table id="usersTable"><thead><tr><th>Jina</th><th>Simu</th><th>Referral Link</th></tr></thead><tbody></tbody></table>
-  <h3>Withdrawals</h3>
-  <table id="withdrawalsTable"><thead><tr><th>Jina</th><th>Simu</th><th>Kiasi</th><th>M-Pesa</th><th>Tendaji</th></tr></thead><tbody></tbody></table>
-</div>
-
-  </main>
-  <footer>
+    <p>Lipa Tsh 5,000 ili kufungua dashboard na kupata referral link</p>
+  </header>  <div class="card" id="auth">
+    <h2>Signup / Login</h2>
+    <input type="text" id="name" placeholder="Jina Kamili">
+    <input type="tel" id="phone" placeholder="Namba ya Simu">
+    <input type="password" id="password" placeholder="Neno la Siri">
+    <button class="btn" onclick="loginOrSignup()">Ingia / Jisajili</button>
+  </div>  <div class="card" id="payPrompt" style="display: none;">
+    <h3>Lipa Tsh 5,000 kwa namba 0756 289 572</h3>
+    <p>Kisha subiri admin akuthibitishe ili kufungua dashboard.</p>
+  </div>  <div class="card" id="dashboard">
+    <h2>Dashboard</h2>
+    <p>Karibu <span id="dashName"></span>!</p>
+    <p>Namba: <span id="dashPhone"></span></p>
+    <p>Referral Link:</p>
+    <p><code id="refLink"></code></p>
+  </div>  <div class="card" id="adminLogin">
+    <h3>Admin Access</h3>
+    <input type="password" id="adminCode" placeholder="Weka admin code">
+    <button class="btn" onclick="checkAdminCode()">Ingia Admin</button>
+  </div>  <div class="card" id="adminPanel">
+    <h2>Admin Panel</h2>
+    <table id="usersTable">
+      <thead><tr><th>Jina</th><th>Simu</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>  <footer>
     <p>© 2025 Kingregan. Haki zote zimehifadhiwa.</p>
-  </footer>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  </footer><script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAwnI3Sezv6SQKQ6nUgLv48IVZGG9Jq5AE",
-      authDomain: "kingreganaire-ref.firebaseapp.com",
-      projectId: "kingreganaire-ref",
-      storageBucket: "kingreganaire-ref.firebasestorage.app",
-      messagingSenderId: "121481840174",
-      appId: "1:121481840174:web:dd4a61e7c28b2602c341bf",
-      measurementId: "G-BMX502JQHL"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAwnI3Sezv6SQKQ6nUgLv48IVZGG9Jq5AE",
+    authDomain: "kingreganaire-ref.firebaseapp.com",
+    projectId: "kingreganaire-ref",
+    storageBucket: "kingreganaire-ref.firebasestorage.app",
+    messagingSenderId: "121481840174",
+    appId: "1:121481840174:web:dd4a61e7c28b2602c341bf",
+    measurementId: "G-BMX502JQHL"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const authForm = document.getElementById("authForm");
-    const authDiv = document.getElementById("auth");
-    const dashDiv = document.getElementById("dashboard");
-    const dashName = document.getElementById("dashName");
-    const dashPhone = document.getElementById("dashPhone");
-    const refLink = document.getElementById("refLink");
-    const withdrawForm = document.getElementById("withdrawForm");
-    const withdrawMessage = document.getElementById("withdrawMessage");
+  const dashName = document.getElementById("dashName");
+  const dashPhone = document.getElementById("dashPhone");
+  const refLink = document.getElementById("refLink");
 
-    authForm.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const name = document.getElementById("username").value;
-      const phone = document.getElementById("userphone").value;
-      localStorage.setItem("name", name);
-      localStorage.setItem("phone", phone);
-      dashName.textContent = name;
-      dashPhone.textContent = phone;
-      refLink.textContent = `https://kingregan.github.io/kingreganaire/?ref=${phone}`;
-      authDiv.style.display = "none";
-      dashDiv.style.display = "block";
-      try {
-        await addDoc(collection(db, "users"), {
-          name: name,
-          phone: phone,
-          ref: refLink.textContent,
-          createdAt: new Date()
-        });
-      } catch (error) {
-        console.error("Error adding user:", error);
-      }
-    });
+  window.loginOrSignup = async function () {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const password = document.getElementById("password").value;
 
-    withdrawForm.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const amount = document.getElementById("amount").value;
-      const mpesa = document.getElementById("mpesa").value;
-      const name = localStorage.getItem("name");
-      const phone = localStorage.getItem("phone");
-      try {
-        await addDoc(collection(db, "withdrawals"), {
-          name: name,
-          phone: phone,
-          amount: amount,
-          mpesa: mpesa,
-          requestedAt: new Date()
-        });
-        withdrawMessage.textContent = `Ombi la malipo ya Tsh ${amount} limetumwa. Malipo yatatumwa kwa namba ${mpesa}.`;
-        withdrawForm.reset();
-      } catch (error) {
-        console.error("Error adding withdrawal:", error);
-        withdrawMessage.textContent = "Tatizo limetokea. Tafadhali jaribu tena.";
-      }
-    });
-
-    function logout() {
-      localStorage.clear();
-      dashDiv.style.display = "none";
-      authDiv.style.display = "block";
-    }
-
-    window.onload = function () {
-      const name = localStorage.getItem("name");
-      const phone = localStorage.getItem("phone");
-      if (name && phone) {
-        dashName.textContent = name;
-        dashPhone.textContent = phone;
-        refLink.textContent = `https://kingregan.github.io/kingreganaire/?ref=${phone}`;
-        authDiv.style.display = "none";
-        dashDiv.style.display = "block";
-      }
-    }
-
-    window.checkAdminCode = async function () {
-      const code = document.getElementById("adminCode").value;
-      if (code === "9523king") {
-        document.getElementById("adminLogin").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-
-        const usersSnap = await getDocs(collection(db, "users"));
-        const usersTable = document.querySelector("#usersTable tbody");
-        usersSnap.forEach(doc => {
-          const d = doc.data();
-          usersTable.innerHTML += `<tr><td>${d.name}</td><td>${d.phone}</td><td>${d.ref}</td></tr>`;
-        });
-
-        const withdrawSnap = await getDocs(collection(db, "withdrawals"));
-        const withdrawalsTable = document.querySelector("#withdrawalsTable tbody");
-        withdrawSnap.forEach(docSnap => {
-          const d = docSnap.data();
-          withdrawalsTable.innerHTML += `<tr><td>${d.name}</td><td>${d.phone}</td><td>${d.amount}</td><td>${d.mpesa}</td><td><button class='btn' onclick='markAsPaid("${docSnap.id}", "${d.name}", "${d.phone}")'>Mark as Paid</button></td></tr>`;
-        });
-      } else {
-        alert("Code si sahihi!");
-      }
-    };
-
-    window.markAsPaid = async function (id, name, phone) {
-      const withdrawalRef = doc(db, "withdrawals", id);
-      await updateDoc(withdrawalRef, { status: "paid" });
-      alert(`Malipo ya ${name} yametiwa alama kama yamelipwa.`);
-      location.reload();
-    };
-
-    document.getElementById("searchInput").addEventListener("keyup", function () {
-      const filter = this.value.toLowerCase();
-      document.querySelectorAll("table tbody tr").forEach(row => {
-        row.style.display = [...row.cells].some(td => td.innerText.toLowerCase().includes(filter)) ? "" : "none";
+    const q = query(collection(db, "users"), where("phone", "==", phone));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      await addDoc(collection(db, "users"), {
+        name,
+        phone,
+        password,
+        paid: false
       });
-    });
-  </script></body>
+      alert("Umefanikiwa kujisajili! Tafadhali lipa Tsh 5,000 kwa namba 0756 289 572.");
+      document.getElementById("auth").style.display = "none";
+      document.getElementById("payPrompt").style.display = "block";
+    } else {
+      const user = snapshot.docs[0].data();
+      if (user.password === password) {
+        if (user.paid) {
+          document.getElementById("auth").style.display = "none";
+          document.getElementById("dashboard").style.display = "block";
+          dashName.textContent = user.name;
+          dashPhone.textContent = user.phone;
+          refLink.textContent = `https://kingregan.github.io/kingreganaire/?ref=${user.phone}`;
+        } else {
+          document.getElementById("auth").style.display = "none";
+          document.getElementById("payPrompt").style.display = "block";
+        }
+      } else {
+        alert("Neno la siri si sahihi!");
+      }
+    }
+  }
+
+  window.checkAdminCode = async function () {
+    const code = document.getElementById("adminCode").value;
+    if (code === "9523king") {
+      document.getElementById("adminLogin").style.display = "none";
+      document.getElementById("adminPanel").style.display = "block";
+      const usersSnap = await getDocs(collection(db, "users"));
+      const tableBody = document.querySelector("#usersTable tbody");
+      usersSnap.forEach(docSnap => {
+        const user = docSnap.data();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${user.name}</td><td>${user.phone}</td><td>${user.paid ? "Paid" : "Not Paid"}</td><td><button class='btn ${user.paid ? "paid-btn" : ""}' onclick='markAsPaid("${docSnap.id}", this)' ${user.paid ? "disabled" : ""}>Mark as Paid</button></td>`;
+        tableBody.appendChild(tr);
+      });
+    } else {
+      alert("Code si sahihi!");
+    }
+  }
+
+  window.markAsPaid = async function (docId, btn) {
+    const ref = doc(db, "users", docId);
+    await updateDoc(ref, { paid: true });
+    btn.textContent = "Paid";
+    btn.classList.add("paid-btn");
+    btn.disabled = true;
+  }
+</script></body>
 </html>
