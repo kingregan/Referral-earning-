@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,197 +6,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KINGREGANAIRE REFFERAL EARNING💰</title>
   <style>
+    /* styles simplified for clarity */
     body {
       font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      margin: 0; padding: 0;
-      text-align: center;
-    }
-    nav {
-      background: #4a148c;
-      color: white;
-      padding: 10px 0;
-      font-family: 'Times New Roman', serif;
-      text-transform: uppercase;
-    }
-    nav ul {
-      list-style: none;
-      margin: 0; padding: 0;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
-    nav ul li {
-      cursor: pointer;
-      user-select: none;
-    }
-    nav ul li:hover {
-      text-decoration: underline;
-    }
-    header#animatedTitle {
-      font-family: 'Times New Roman', serif;
-      text-transform: uppercase;
-      font-size: 30px;
-      color: #4a148c;
-      text-align: center;
+      background: #f5f5f5;
       padding: 20px;
-      animation: bounce 2s ease forwards;
-    }
-    .btn {
-      background: #6a1b9a;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 18px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #7b1fa2;
-    }
-    .paid-btn {
-      background: #4caf50 !important;
     }
     .card {
       background: white;
-      max-width: 600px;
+      max-width: 400px;
       margin: 20px auto;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: left;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
-    input {
-      padding: 10px;
-      width: 90%;
-      margin-bottom: 15px;
-      border-radius: 6px;
+    input[type=text], input[type=email], input[type=tel], input[type=password] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0 12px 0;
       border: 1px solid #ccc;
-      font-size: 16px;
+      border-radius: 4px;
     }
-    #dashboard, #adminPanel, #aboutSection, #payPrompt {
-      display: none;
+    button.btn {
+      width: 100%;
+      background-color: #6a1b9a;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .password-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .link {
+      color: #6a1b9a;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 10px;
+      display: block;
       text-align: center;
     }
-    #loaderSignup, #loaderLogin {
-      display: none;
-      margin: 10px auto;
-      border: 6px solid #f3f3f3;
-      border-radius: 50%;
-      border-top: 6px solid #6a1b9a;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .link:hover {
+      color: #4a148c;
     }
     #successMsg {
-      background: white;
       color: green;
-      padding: 10px;
-      margin-top: 10px;
-      display: none;
       text-align: center;
+      margin-top: 12px;
+      display: none;
     }
-    footer {
-      background: #4a148c;
-      color: white;
-      padding: 15px;
-      margin-top: 30px;
-      font-family: 'Times New Roman', serif;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-30px);
-      }
-      60% {
-        transform: translateY(-15px);
-      }
+    #loaderSignup, #loaderLogin {
+      text-align: center;
+      margin: 10px 0;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <nav>
-    <ul>
-      <li onclick="showHome()">HOME</li>
-      <li onclick="showAbout()">ABOUT</li>
-    </ul>
-  </nav>
-
-  <header id="animatedTitle">
-    KINGREGANAIRE REFFERAL EARNING💰
-  </header>
-
-  <div id="aboutSection" class="card">
-    <h2>About Kingreganaire Referral Earning</h2>
-    <p>Kingreganaire Referral Earning ni platform inayokuwezesha kutuma pesa na kupata faida kwa kuwahamasisha wengine kujiunga.</p>
-    <p>Platform hii ina mfumo wa referral unaowapa watumiaji fursa ya kupata mapato kwa njia rahisi na salama.</p>
-  </div>
 
   <div class="card" id="auth">
     <h2>Signup</h2>
     <input type="text" id="name" placeholder="Jina Kamili" />
+    <input type="email" id="email" placeholder="Email" />
     <input type="tel" id="phone" placeholder="Namba ya Simu" />
+    <input type="text" id="nida" placeholder="Namba ya NIDA" />
+    <input type="text" id="region" placeholder="Mkoa" />
+    <input type="text" id="district" placeholder="Wilaya" />
     <input type="password" id="password" placeholder="Neno la Siri" />
+    <input type="password" id="confirmPassword" placeholder="Thibitisha Neno la Siri" />
+    <div class="password-toggle">
+      <input type="checkbox" id="togglePassword" />
+      <label for="togglePassword">Onyesha Neno la Siri</label>
+    </div>
     <button class="btn" onclick="signup()">Jisajili</button>
-    <div id="loaderSignup"></div>
+    <div id="loaderSignup">Inasajili...</div>
     <div id="successMsg">✅ Usajili umefanikiwa! Tafadhali fanya login sasa.</div>
+
     <hr />
+
     <h2>Login</h2>
     <input type="tel" id="loginPhone" placeholder="Namba ya Simu" />
     <input type="password" id="loginPassword" placeholder="Neno la Siri" />
-    <button class="btn" onclick="login()">Ingia</button>
-    <div id="loaderLogin"></div>
+    <div class="password-toggle">
+      <input type="checkbox" id="toggleLoginPassword" />
+      <label for="toggleLoginPassword">Onyesha Neno la Siri</label>
+    </div>
+    <button class="btn" onclick="login()">Login</button>
+    <div id="loaderLogin">Inaanza Kuingia...</div>
+    <span class="link" onclick="showResetPassword()">Umesahau Neno la Siri?</span>
   </div>
 
-  <div class="card" id="payPrompt">
-    <h3>Lipa Tsh 5,000 kwa namba 0756 289 572</h3>
-    <p>Kisha subiri admin akuthibitishe ili kufungua dashboard.</p>
+  <div class="card" id="resetPasswordCard" style="display:none">
+    <h2>Badili Neno la Siri</h2>
+    <input type="tel" id="resetPhone" placeholder="Namba ya Simu" />
+    <input type="password" id="newPassword" placeholder="Neno Jipya" />
+    <input type="password" id="confirmNewPassword" placeholder="Thibitisha Neno Jipya" />
+    <button class="btn" onclick="resetPassword()">Wasilisha</button>
+    <span class="link" onclick="backToLogin()">Rudi kwenye Login</span>
   </div>
-
-  <div class="card" id="dashboard">
-    <h2>Dashboard</h2>
-    <p>Karibu <span id="dashName"></span>!</p>
-    <p>Namba: <span id="dashPhone"></span></p>
-    <p>Referral Link:</p>
-    <p><code id="refLink"></code></p>
-  </div>
-
-  <div class="card" id="adminLogin">
-    <h3>Admin Access</h3>
-    <input type="password" id="adminCode" placeholder="Weka admin code" />
-    <button class="btn" onclick="checkAdminCode()">Ingia Admin</button>
-  </div>
-
-  <div class="card" id="adminPanel">
-    <h2>Admin Panel</h2>
-    <table id="usersTable" style="width: 100%; border-collapse: collapse;">
-      <thead>
-        <tr style="background: #6a1b9a; color: white;">
-          <th style="padding: 8px; border: 1px solid #ddd;">Jina</th>
-          <th style="padding: 8px; border: 1px solid #ddd;">Simu</th>
-          <th style="padding: 8px; border: 1px solid #ddd;">Status</th>
-          <th style="padding: 8px; border: 1px solid #ddd;">Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <footer>
-    <p>© 2025 Kingregan. Haki zote zimehifadhiwa.</p>
-  </footer>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, collection, getDocs, query, where, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAwnI3Sezv6SQKQ6nUgLv48IVZGG9Jq5AE",
@@ -209,61 +131,111 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const functions = getFunctions(app);
 
-  const dashName = document.getElementById("dashName");
-  const dashPhone = document.getElementById("dashPhone");
-  const refLink = document.getElementById("refLink");
   const loaderSignup = document.getElementById("loaderSignup");
   const successMsg = document.getElementById("successMsg");
   const loaderLogin = document.getElementById("loaderLogin");
 
-  window.showAbout = function () {
-    hideAll();
-    document.getElementById("aboutSection").style.display = "block";
-  };
-
-  window.showHome = function () {
-    hideAll();
-    document.getElementById("auth").style.display = "block";
-    document.getElementById("adminLogin").style.display = "block";
-  };
-
-  function hideAll() {
-    document.getElementById("auth").style.display = "none";
-    document.getElementById("payPrompt").style.display = "none";
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("adminLogin").style.display = "none";
-    document.getElementById("adminPanel").style.display = "none";
-    document.getElementById("aboutSection").style.display = "none";
-  }
-
   window.signup = async function () {
     const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
+    const nida = document.getElementById("nida").value.trim();
+    const region = document.getElementById("region").value.trim();
+    const district = document.getElementById("district").value.trim();
     const password = document.getElementById("password").value.trim();
+    const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-    if (!name || !phone || !password) {
+    if (!name || !email || !phone || !nida || !region || !district || !password || !confirmPassword) {
       alert("Tafadhali jaza taarifa zote za usajili.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("Neno la siri na uthibitisho wake havilingani.");
       return;
     }
 
     loaderSignup.style.display = "block";
     successMsg.style.display = "none";
+    document.querySelector("#auth button").disabled = true;
 
     try {
       await addDoc(collection(db, "users"), {
-        name,
-        phone,
-        password,
-        paid: false
+        name, email, phone, nida, region, district, password, paid: false
       });
-      loaderSignup.style.display = "none";
-      successMsg.style.display = "block";
+      setTimeout(() => {
+        loaderSignup.style.display = "none";
+        successMsg.style.display = "block";
+        document.querySelector("#auth button").disabled = false;
+      }, 1000);
     } catch (err) {
       alert("Tatizo limetokea, jaribu tena.");
       loaderSignup.style.display = "none";
+      document.querySelector("#auth button").disabled = false;
     }
   };
+
+  window.showResetPassword = function () {
+    document.getElementById("auth").style.display = "none";
+    document.getElementById("resetPasswordCard").style.display = "block";
+  };
+
+  window.backToLogin = function () {
+    document.getElementById("resetPasswordCard").style.display = "none";
+    document.getElementById("auth").style.display = "block";
+  };
+
+  window.resetPassword = async function () {
+    const phone = document.getElementById("resetPhone").value.trim();
+    const newPassword = document.getElementById("newPassword").value.trim();
+    const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
+
+    if (!phone || !newPassword || !confirmNewPassword) {
+      alert("Tafadhali jaza sehemu zote.");
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      alert("Neno jipya na uthibitisho havilingani.");
+      return;
+    }
+
+    try {
+      const q = query(collection(db, "users"), where("phone", "==", phone));
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        alert("Mtumiaji hakupatikana.");
+        return;
+      }
+      // Update password
+      for (const docSnap of querySnapshot.docs) {
+        await updateDoc(doc(db, "users", docSnap.id), { password: newPassword });
+      }
+
+      // Call Firebase function to send email notification
+      const sendEmail = httpsCallable(functions, "sendPasswordResetEmail");
+      await sendEmail({ phone });
+
+      alert("Neno la siri limebadilishwa kwa mafanikio na email imetumwa.");
+      backToLogin();
+    } catch (err) {
+      console.error(err);
+      alert("Tatizo limetokea, jaribu tena.");
+    }
+  };
+
+  document.getElementById("togglePassword").addEventListener("change", function () {
+    const passwordInput = document.getElementById("password");
+    const confirmInput = document.getElementById("confirmPassword");
+    const type = this.checked ? "text" : "password";
+    passwordInput.type = type;
+    confirmInput.type = type;
+  });
+
+  document.getElementById("toggleLoginPassword").addEventListener("change", function () {
+    const loginInput = document.getElementById("loginPassword");
+    loginInput.type = this.checked ? "text" : "password";
+  });
 
   window.login = async function () {
     const phone = document.getElementById("loginPhone").value.trim();
@@ -275,61 +247,22 @@
     }
 
     loaderLogin.style.display = "block";
-
-    const q = query(collection(db, "users"), where("phone", "==", phone));
-    const snapshot = await getDocs(q);
-
-    loaderLogin.style.display = "none";
-
-    if (!snapshot.empty) {
-      const user = snapshot.docs[0].data();
-      if (user.password === password) {
-        if (user.paid) {
-          hideAll();
-          document.getElementById("dashboard").style.display = "block";
-          dashName.textContent = user.name;
-          dashPhone.textContent = user.phone;
-          refLink.textContent = `https://kingregan.github.io/kingreganaire/?ref=${user.phone}`;
-        } else {
-          hideAll();
-          document.getElementById("payPrompt").style.display = "block";
-        }
+    try {
+      const q = query(collection(db, "users"), where("phone", "==", phone), where("password", "==", password));
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        alert("Namba au neno la siri si sahihi.");
       } else {
-        alert("Neno la siri si sahihi!");
+        alert("Umeingia kwa mafanikio!");
+        // TODO: Endesha dashboard au kurasa za app hapa
       }
-    } else {
-      alert("Namba haijasajiliwa.");
+    } catch (err) {
+      alert("Tatizo limetokea, jaribu tena.");
+    } finally {
+      loaderLogin.style.display = "none";
     }
   };
-
-  window.checkAdminCode = async function () {
-    const code = document.getElementById("adminCode").value;
-    if (code === "9523king") {
-      hideAll();
-      document.getElementById("adminPanel").style.display = "block";
-      const usersSnap = await getDocs(collection(db, "users"));
-      const tableBody = document.querySelector("#usersTable tbody");
-      tableBody.innerHTML = "";
-      usersSnap.forEach(docSnap => {
-        const user = docSnap.data();
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${user.name}</td><td>${user.phone}</td><td>${user.paid ? "Paid" : "Not Paid"}</td><td><button class='btn ${user.paid ? "paid-btn" : ""}' onclick='markAsPaid("${docSnap.id}", this)' ${user.paid ? "disabled" : ""}>Mark as Paid</button></td>`;
-        tableBody.appendChild(tr);
-      });
-    } else {
-      alert("Code si sahihi!");
-    }
-  };
-
-  window.markAsPaid = async function (docId, btn) {
-    const ref = doc(db, "users", docId);
-    await updateDoc(ref, { paid: true });
-    btn.textContent = "Paid";
-    btn.classList.add("paid-btn");
-    btn.disabled = true;
-  };
-
-  window.onload = showHome;
 </script>
+
 </body>
 </html>
