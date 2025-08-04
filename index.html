@@ -1,0 +1,88 @@
+# Referral-earning-<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KingReganaire Ref</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: #4a148c;
+      color: white;
+      padding: 20px;
+    }
+    main {
+      padding: 30px;
+    }
+    .btn {
+      background: #6a1b9a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #7b1fa2;
+    }
+    .card {
+      background: white;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input, select {
+      padding: 10px;
+      width: 90%;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Karibu KingReganaire Ref</h1>
+    <p>Jiunge kwa Tsh 5,000 na uanze kupata faida kwa referral!</p>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Jisajili</h2>
+      <form id="signupForm">
+        <input type="text" id="name" placeholder="Jina Kamili" required><br>
+        <input type="tel" id="phone" placeholder="Namba ya Simu" required><br>
+        <input type="text" id="referral" placeholder="Referral Code (optional)"><br>
+        <button type="submit" class="btn">Endelea</button>
+      </form>
+    </div><div class="card">
+  <h2>Hatua ya Malipo</h2>
+  <p>Lipa Tsh 5,000 kwenda:</p>
+  <h3>M-Pesa: 0767 123 456</h3>
+  <p>Kisha tuma screenshot ya ushahidi kwa WhatsApp:</p>
+  <h4><a href="https://wa.me/255767123456">Tuma WhatsApp Screenshot</a></h4>
+</div>
+
+<div class="card">
+  <h2>Faida ya Referral</h2>
+  <p>Kwa kila mtu atakayejiunga kupitia wewe na akalipa, utapata Tsh 2,000.</p>
+  <p>Utaweza kutoa pesa ukiwa na Tsh 10,000 au zaidi.</p>
+</div>
+
+  </main>  <script>
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const ref = document.getElementById("referral").value || "Hakuna";
+      alert(`Asante ${name}, maelekezo ya malipo yametumwa. Referral: ${ref}`);
+    });
+  </script></body>
+</html>
