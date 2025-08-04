@@ -1,4 +1,4 @@
-<!-- Kingreganaire Ref Full Code with Password and Payment Restriction--><!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,6 +49,27 @@
     #dashboard, #adminPanel {
       display: none;
     }
+    #loader {
+      display: none;
+      margin: 10px auto;
+      border: 6px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 6px solid #6a1b9a;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #successMsg {
+      background: white;
+      color: green;
+      padding: 10px;
+      margin-top: 10px;
+      display: none;
+    }
     footer {
       background: #4a148c;
       color: white;
@@ -62,11 +83,18 @@
     <h1>Karibu Kingreganaire Ref</h1>
     <p>Lipa Tsh 5,000 ili kufungua dashboard na kupata referral link</p>
   </header>  <div class="card" id="auth">
-    <h2>Signup / Login</h2>
+    <h2>Signup</h2>
     <input type="text" id="name" placeholder="Jina Kamili">
     <input type="tel" id="phone" placeholder="Namba ya Simu">
     <input type="password" id="password" placeholder="Neno la Siri">
-    <button class="btn" onclick="loginOrSignup()">Ingia / Jisajili</button>
+    <button class="btn" onclick="signup()">Jisajili</button>
+    <div id="loader"></div>
+    <div id="successMsg">✅ Usajili umefanikiwa! Tafadhali fanya login sasa.</div>
+    <hr>
+    <h2>Login</h2>
+    <input type="tel" id="loginPhone" placeholder="Namba ya Simu">
+    <input type="password" id="loginPassword" placeholder="Neno la Siri">
+    <button class="btn" onclick="login()">Ingia</button>
   </div>  <div class="card" id="payPrompt" style="display: none;">
     <h3>Lipa Tsh 5,000 kwa namba 0756 289 572</h3>
     <p>Kisha subiri admin akuthibitishe ili kufungua dashboard.</p>
@@ -109,24 +137,38 @@
   const dashPhone = document.getElementById("dashPhone");
   const refLink = document.getElementById("refLink");
 
-  window.loginOrSignup = async function () {
+  window.signup = async function () {
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
     const password = document.getElementById("password").value;
+    const loader = document.getElementById("loader");
+    const successMsg = document.getElementById("successMsg");
 
-    const q = query(collection(db, "users"), where("phone", "==", phone));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) {
+    loader.style.display = "block";
+    successMsg.style.display = "none";
+
+    try {
       await addDoc(collection(db, "users"), {
         name,
         phone,
         password,
         paid: false
       });
-      alert("Umefanikiwa kujisajili! Tafadhali lipa Tsh 5,000 kwa namba 0756 289 572.");
-      document.getElementById("auth").style.display = "none";
-      document.getElementById("payPrompt").style.display = "block";
-    } else {
+      loader.style.display = "none";
+      successMsg.style.display = "block";
+    } catch (err) {
+      alert("Tatizo limetokea. Jaribu tena.");
+      loader.style.display = "none";
+    }
+  }
+
+  window.login = async function () {
+    const phone = document.getElementById("loginPhone").value;
+    const password = document.getElementById("loginPassword").value;
+
+    const q = query(collection(db, "users"), where("phone", "==", phone));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
       const user = snapshot.docs[0].data();
       if (user.password === password) {
         if (user.paid) {
@@ -142,6 +184,8 @@
       } else {
         alert("Neno la siri si sahihi!");
       }
+    } else {
+      alert("Namba haijasajiliwa.");
     }
   }
 
